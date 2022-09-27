@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+OneNews
+{% endblock title %}
+
+{% block content %}
+
+    <div align="left"><h3>{{ onenews.heading|censor }}</h3></div>
+    <br>
+    <div align="left">{{ onenews.time_in|date:'d M Y' }}</div>
+    <div align="left">{{ onenews.txt|censor }}</div>
+
+{% endblock content %}
+
