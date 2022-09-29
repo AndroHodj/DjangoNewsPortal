@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from news.models import *
 from news.resources import *
 
-=========================================================================================================================================================
+
 Создать двух пользователей (с помощью метода User.objects.create_user('username')).
 =========================================================================================================================================================
 user1 = User.objects.create_user("Andro")
@@ -10,11 +10,13 @@ user2 = User.objects.create_user("Kate")
 
 
 Создать два объекта модели Author, связанные с пользователями.
+=========================================================================================================================================================
 Author.objects.create(user = user1)
 Author.objects.create(user = user2)
 
 
 Добавить 4 категории в модель Category.
+=========================================================================================================================================================
 Category.objects.create(category_name = 'Sport')
 Category.objects.create(category_name = 'History')
 Category.objects.create(category_name = 'News')
@@ -22,12 +24,14 @@ Category.objects.create(category_name = 'Article')
 
 
 Добавить 2 статьи и 1 новость.
+=========================================================================================================================================================
 Post.objects.create(article_or_news = 'AR', author = author1, heading = 'Title', txt = 'text')
 Post.objects.create(article_or_news = 'AR', author = author1, heading = 'Title', txt = 'text')
 Post.objects.create(author = author, heading = 'Title', txt = 'text')
 
 
 Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+=========================================================================================================================================================
 Post.objects.get(id=1).category.add(Category.objects.get(id=1))
 Post.objects.get(id=1).category.add(Category.objects.get(id=2))
 Post.objects.get(id=2).category.add(Category.objects.get(id=3))
