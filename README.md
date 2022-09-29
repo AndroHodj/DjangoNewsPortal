@@ -5,7 +5,7 @@ from news.resources import *
 
 Создать двух пользователей (с помощью метода User.objects.create_user('username')).
 ================================
-### user1 = User.objects.create_user("Andro")
+#### user1 = User.objects.create_user("Andro")
 ### user2 = User.objects.create_user("Kate")
 
 
