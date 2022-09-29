@@ -41,6 +41,7 @@ Post.objects.get(id=3).category.add(Category.objects.get(id=1))
 
 
 Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
+=========================================================================================================================================================
 Comment.objects.create(comment_post=Post.objects.get(pk=1),comment_user=Author.objects.get(pk=1).user, txt_comment = 'Very cool story')
 Comment.objects.create(comment_post=Post.objects.get(pk=2),comment_user=Author.objects.get(pk=1).user, txt_comment = 'Not Bad')
 Comment.objects.create(comment_post=Post.objects.get(pk=2),comment_user=Author.objects.get(pk=2).user, txt_comment = 'Good job')
@@ -48,6 +49,7 @@ Comment.objects.create(comment_post=Post.objects.get(pk=3),comment_user=Author.o
 
 
 Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+=========================================================================================================================================================
 Comment.objects.get(pk=1).like()
 Comment.objects.get(pk=1).like()
 Comment.objects.get(pk=1).like()
@@ -57,12 +59,14 @@ Post.objects.get(pk=1).rating_post
 
 
 Обновить рейтинги пользователей.
+=========================================================================================================================================================
 user1 = Author.objects.get(pk=1)
 user1.update_rating()
 user1.rating_author
 
 
 Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+=
 s = Author.objects.order_by('-rating_author')
 for i in s:
 ...    i.rating_author
