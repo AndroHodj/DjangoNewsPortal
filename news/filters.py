@@ -1,19 +1,33 @@
-from django_filters import FilterSet, DateTimeFilter
-from .models import Post
+from django_filters import FilterSet
+from .models import Category
 from django.forms import DateTimeInput
+import django_filters
 
 
-class NewsFilter(FilterSet):
-    time_in = DateTimeFilter(field_name='time_in',
-                             lookup_expr='lte',
-                             widget=DateTimeInput(format='%Y-%m-%dT%H:%M',
-                                                  attrs={'type': 'datetime-local'}
-                                                  )
-                             ),
+class PostFilter(FilterSet):
+    heading = django_filters.CharFilter(
+        field_name='heading',
+        lookup_expr='icontains',
+        label='Heading'
+    )
 
-    class Meta:
-        model = Post
-        fields = {'heading': ['contains'],
-                  'category': ['exact']
-                  }
+    category = django_filters.ModelChoiceFilter(
+        field_name='category',
+        queryset=Category.objects.all(),
+        label='Category',
+        empty_label='Select a category',
+    )
+
+    time_in = django_filters.DateTimeFilter(
+        field_name='time_in',
+        lookup_expr='gt',
+        label='Date',
+        widget=DateTimeInput(
+            format='%Y-%m-%d',
+            attrs={'type': 'date'}
+        ),
+    )
+
+
+
 

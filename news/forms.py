@@ -1,37 +1,24 @@
 from django import forms
-from .models import Post
 from django.core.exceptions import ValidationError
+from .models import Post, Category
 
 
 class NewsForm(forms.ModelForm):
+    article_or_news = forms.ChoiceField(label='Type', choices=Post.CATEGORIES)
+
+    category = forms.ModelMultipleChoiceField(
+        label='Category',
+        queryset=Category.objects.all(),
+    )
+
     class Meta:
         model = Post
         fields = [
             'heading',
-            'category',
             'txt',
             'author',
-        ]
-
-    def clean(self):
-        cleaned_data = super().clean()
-        heading = cleaned_data.get('heading')
-        txt = cleaned_data.get('txt')
-        if heading == txt:
-            raise ValidationError(
-                {'heading': 'Описание не может быть идентично названию'}
-            )
-        return cleaned_data
-
-
-class ArticlesForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = [
-            'heading',
+            'article_or_news',
             'category',
-            'txt',
-            'author',
         ]
 
     def clean(self):

@@ -8,33 +8,50 @@ News
 {% endblock title %}
 
 {% block content %}
-    <div align="left"><h1>Все новости: {{ news|length }}</h1>
-        <form action="" method="get">
+<div align="left"><h1>Всего новостей: {{ news|length }}</h1>
+     <form action=""  method="get">
+        {{ filterset.form.as_p }}
+        <input type="submit" value="Найти">
+    </form>
+<hr>
+    {% if perms.news.add_post %}
+    <a href="{% url 'news_create' %}">Создать пост</a>
+    {% endif %}
 
-            {{ filterset.form.as_p }}
-
-            <label for="meeting-time">Время добавления записи:</label>
-            <input type="datetime-local" id="meeting-time"
-             name="meeting-time" value=""
-             min="2018-06-07T00:00" max="2022-12-31T00:00">
-
-            <input type="submit" value="Найти"/>
-        </form>
-        <hr>
-
-    {% for post in news|dictsort:'time_in' %}
     <br>
-    <div align="left">{{ post.heading|censor }}</div>
-    <div align="left">{{ post.time_in|date:'d M Y' }}</div>
-    <div align="left">{{ post.txt|truncatewords:20|censor }}</div>
+    <table width="350">
+        <tr>
+            <td>Посты</td>
+
+            {% if perms.news.change_post or perms.news.add_post %}
+            <td><h10>Действия</h10></td>
+            {% endif %}
+        </tr>
+
+        {% for post in news|dictsort:'time_in' %}
+        <tr>
+        <td>
+            <div align="left">{{ post.heading|censor }}</div>
+            <div align="left">{{ post.time_in|date:'d M Y' }}</div>
+            <div align="left">{{ post.txt|truncatewords:20|censor }}</div>
+            <br>
+        </td>
+        <td>
+            {% if perms.news.change_post %}
+            <a href="{% url 'news_update' pk=post.id %}">Редактировать</a>
+            {% endif %}
+        </td>
+        </tr>
     {% endfor %}
+    </table>
+
+
 
    {% if page_obj.has_previous %}
        <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
-            ...
-           <a href="?page={% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
-       {% endif %}
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
    {% endif %}
 
    {# Информация о текущей странице #}
@@ -44,7 +61,6 @@ News
    {% if page_obj.has_next %}
        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
-            ...
            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
